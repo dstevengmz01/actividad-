@@ -1,8 +1,23 @@
+const { Model } = require("sequelize");
 const { Reserva } = require("../models");
+const { Usuario } = require("../models");
 
 class ReservaService {
   async getAllReservas() {
-    return await Reserva.findAll();
+    return await Reserva.findAll({
+      attributes: [
+        "id",
+        "fechaReserva",
+        "lugar",
+        "nombreReserva",
+        "usuario_id",
+      ],
+      include: {
+        model: Usuario,
+        as: "usuario",
+        attributes: ["nombre"],
+      },
+    });
   }
 
   async getReservaById(id) {
